@@ -1,0 +1,9 @@
+[run]
+branch = True
+
+[report]
+show_missing = True
+exclude_lines =
+    if __name__ == .__main__.:
+    assert False
+    assert False,.*
