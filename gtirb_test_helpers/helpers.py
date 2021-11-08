@@ -20,17 +20,40 @@ from typing import Dict, Iterable, Set, Tuple, Type, TypeVar, Union
 
 import gtirb
 
+_DEFAULT_BYTE_ORDERS = {
+    gtirb.Module.ISA.ARM: gtirb.Module.ByteOrder.Little,
+    gtirb.Module.ISA.ARM64: gtirb.Module.ByteOrder.Little,
+    gtirb.Module.ISA.IA32: gtirb.Module.ByteOrder.Little,
+    gtirb.Module.ISA.PPC32: gtirb.Module.ByteOrder.Big,
+    gtirb.Module.ISA.PPC64: gtirb.Module.ByteOrder.Big,
+    gtirb.Module.ISA.X64: gtirb.Module.ByteOrder.Little,
+}
+
 
 def create_test_module(
     file_format: gtirb.Module.FileFormat,
     isa: gtirb.Module.ISA,
     binary_type: Iterable[str] = None,
+    byte_order: gtirb.Module.ByteOrder = None,
 ) -> Tuple[gtirb.IR, gtirb.Module]:
     """
     Creates a test GTIRB module and returns the IR object and module object.
     """
+
+    if byte_order is None:
+        actual_byte_order = _DEFAULT_BYTE_ORDERS.get(
+            isa, gtirb.Module.ByteOrder.Undefined
+        )
+    else:
+        actual_byte_order = byte_order
+
     ir = gtirb.IR()
-    m = gtirb.Module(isa=isa, file_format=file_format, name="test")
+    m = gtirb.Module(
+        isa=isa,
+        file_format=file_format,
+        name="test",
+        byte_order=actual_byte_order,
+    )
     m.ir = ir
 
     add_standard_aux_data_tables(m)

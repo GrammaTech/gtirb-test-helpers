@@ -1,2 +1,6 @@
+1.1.0:
+- Added byte_order to create_test_module and defaulted to inferring it from
+  the module's ISA
+
 1.0.0:
 - Initial version
