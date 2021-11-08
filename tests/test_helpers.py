@@ -36,18 +36,23 @@ def test_create_module():
     assert m.name
     assert m.isa == gtirb.Module.ISA.ARM
     assert m.file_format == gtirb.Module.FileFormat.PE
+    assert m.byte_order == gtirb.Module.ByteOrder.Little
     assert m.aux_data
 
 
 def test_create_module_with_binary_type():
     ir, m = create_test_module(
-        gtirb.Module.FileFormat.ELF, gtirb.Module.ISA.X64, binary_type=("DYN",)
+        gtirb.Module.FileFormat.ELF,
+        gtirb.Module.ISA.X64,
+        binary_type=("DYN",),
+        byte_order=gtirb.Module.ByteOrder.Big,
     )
     assert ir
     assert m.ir is ir
     assert m.name
     assert m.isa == gtirb.Module.ISA.X64
     assert m.file_format == gtirb.Module.FileFormat.ELF
+    assert m.byte_order == gtirb.Module.ByteOrder.Big
     assert m.aux_data
     assert m.aux_data["binaryType"].data == ["DYN"]
 
