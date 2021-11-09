@@ -1,3 +1,7 @@
+1.2.0 (Unreleased):
+- Added additional_entries parameter to add_function for specifying multiple
+  entry points to functions
+
 1.1.0:
 - Added byte_order to create_test_module and defaulted to inferring it from
   the module's ISA

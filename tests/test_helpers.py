@@ -198,12 +198,12 @@ def test_add_function_with_name():
     b2 = add_code_block(bi, b"\xC3")
     b3 = add_code_block(bi, b"\xCC")
 
-    func_id = add_function(m, "hello", b1, {b2, b3})
+    func_id = add_function(m, "hello", b1, {b2, b3}, {b2})
     assert func_id
     (sym,) = m.symbols
     assert sym.name == "hello"
     assert sym.referent is b1
-    assert m.aux_data["functionEntries"].data[func_id] == {b1}
+    assert m.aux_data["functionEntries"].data[func_id] == {b1, b2}
     assert m.aux_data["functionBlocks"].data[func_id] == {b1, b2, b3}
     assert m.aux_data["functionNames"].data[func_id] == sym
     assert m.aux_data["elfSymbolInfo"].data[sym] == (
@@ -225,9 +225,9 @@ def test_add_function_with_symbol():
     b3 = add_code_block(bi, b"\xCC")
     sym = add_symbol(m, "hello", b1)
 
-    func_id = add_function(m, sym, b1, {b2, b3})
+    func_id = add_function(m, sym, b1, {b2, b3}, {b2})
     assert func_id
-    assert m.aux_data["functionEntries"].data[func_id] == {b1}
+    assert m.aux_data["functionEntries"].data[func_id] == {b1, b2}
     assert m.aux_data["functionBlocks"].data[func_id] == {b1, b2, b3}
     assert m.aux_data["functionNames"].data[func_id] == sym
     assert m.aux_data["elfSymbolInfo"].data[sym] == (
