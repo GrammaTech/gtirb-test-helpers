@@ -316,6 +316,7 @@ def add_function(
     sym_or_name: Union[str, gtirb.Symbol],
     entry_block: gtirb.CodeBlock,
     other_blocks: Set[gtirb.CodeBlock] = set(),
+    additional_entries: Set[gtirb.CodeBlock] = set(),
 ) -> uuid.UUID:
     """
     Adds a function to all the appropriate aux data.
@@ -327,7 +328,7 @@ def add_function(
     else:
         assert False, "Invalid symbol name"
 
-    entry_blocks = {entry_block}
+    entry_blocks = {entry_block} | additional_entries
     all_blocks = entry_blocks | other_blocks
 
     func_uuid = uuid.uuid4()
