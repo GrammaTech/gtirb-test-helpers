@@ -1,4 +1,7 @@
-1.2.0 (Unreleased):
+1.2.1 (Unreleased):
+- TBD
+
+1.2.0:
 - Added additional_entries parameter to add_function for specifying multiple
   entry points to functions
 
