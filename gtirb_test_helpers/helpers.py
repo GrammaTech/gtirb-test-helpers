@@ -263,10 +263,10 @@ def add_byte_block(
             if isinstance(key, int):
                 off = key
             else:
-                off = key[0]
+                off, size = key
                 size_aux_data[
                     gtirb.Offset(byte_interval, byte_interval.size + off)
-                ] = key[1]
+                ] = size
 
             byte_interval.symbolic_expressions[byte_interval.size + off] = expr
     byte_interval.size += len(content)
