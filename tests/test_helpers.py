@@ -119,11 +119,17 @@ def test_add_code_block():
     assert b1.offset == 0
     assert b1.size == 1
 
-    expr = gtirb.SymAddrConst(0, gtirb.Symbol("hi"))
-    b2 = add_code_block(bi, b"\x90\x90\xE8\x00\x00\x00\x00", {3: expr})
+    expr1 = gtirb.SymAddrConst(0, gtirb.Symbol("hi"))
+    expr2 = gtirb.SymAddrConst(0, gtirb.Symbol("bye"))
+    b2 = add_code_block(
+        bi, b"\x90\x90\xE8\x00\x00\x00\x00", {(0, 2): expr1, 3: expr2}
+    )
     assert bi.size == 8
     assert bi.contents == b"\xC3\x90\x90\xE8\x00\x00\x00\x00"
-    assert bi.symbolic_expressions == {4: expr}
+    assert bi.symbolic_expressions == {1: expr1, 4: expr2}
+    assert m.aux_data["symbolicExpressionSizes"].data == {
+        gtirb.Offset(bi, 1): 2
+    }
     assert isinstance(b2, gtirb.CodeBlock)
     assert b2.byte_interval is bi
     assert b2.offset == 1
