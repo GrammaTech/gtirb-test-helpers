@@ -225,18 +225,49 @@ def add_byte_block(
     byte_interval: gtirb.ByteInterval,
     block_type: Type[BlockT],
     content: bytes,
-    symbolic_expressions: Dict[int, gtirb.SymbolicExpression] = None,
+    symbolic_expressions: Dict[
+        Union[int, Tuple[int, int]], gtirb.SymbolicExpression
+    ] = None,
 ) -> BlockT:
     """
     Adds a block to a byte interval, setting up its contents and optionally
     its symbolic expressions.
+    :param byte_interval: The byte interval to add the block to.
+    :param block_type: The block class to use.
+    :param contents: The content of the block.
+    :param symbolic_expressions: A dict mapping either symbolic expression
+           offset or tuples of [symbolic expression offset, symbolic
+           expression size] to symbplic expression.
+    :returns: The new block.
     """
     b = block_type(offset=byte_interval.size, size=len(content))
     b.byte_interval = byte_interval
     byte_interval.contents += content
+
+    if (
+        byte_interval.module
+        and "symbolicExpressionSizes" in byte_interval.module.aux_data
+    ):
+        size_aux_data = byte_interval.module.aux_data[
+            "symbolicExpressionSizes"
+        ].data
+    else:
+        size_aux_data = None
+        for key in symbolic_expressions.keys():
+            if not isinstance(key, int):
+                raise ValueError("could not find symbolicExpressionSizes")
+
     if symbolic_expressions:
-        for off, expr in symbolic_expressions.items():
+        for key, expr in symbolic_expressions.items():
             assert isinstance(expr, gtirb.SymbolicExpression)
+            if isinstance(key, int):
+                off = key
+            else:
+                off = key[0]
+                size_aux_data[
+                    gtirb.Offset(byte_interval, byte_interval.size + off)
+                ] = key[1]
+
             byte_interval.symbolic_expressions[byte_interval.size + off] = expr
     byte_interval.size += len(content)
     return b
@@ -245,11 +276,19 @@ def add_byte_block(
 def add_code_block(
     byte_interval: gtirb.ByteInterval,
     content: bytes,
-    symbolic_expressions: Dict[int, gtirb.SymbolicExpression] = None,
+    symbolic_expressions: Dict[
+        Union[int, Tuple[int, int]], gtirb.SymbolicExpression
+    ] = None,
 ) -> gtirb.CodeBlock:
     """
     Adds a code block to a byte interval, setting up its contents and
     optionally its symbolic expressions.
+    :param byte_interval: The byte interval to add the block to.
+    :param contents: The content of the block.
+    :param symbolic_expressions: A dict mapping either symbolic expression
+           offset or tuples of [symbolic expression offset, symbolic
+           expression size] to symbplic expression.
+    :returns: The new block.
     """
     return add_byte_block(
         byte_interval, gtirb.CodeBlock, content, symbolic_expressions
@@ -259,11 +298,19 @@ def add_code_block(
 def add_data_block(
     byte_interval: gtirb.ByteInterval,
     content: bytes,
-    symbolic_expressions: Dict[int, gtirb.SymbolicExpression] = None,
+    symbolic_expressions: Dict[
+        Union[int, Tuple[int, int]], gtirb.SymbolicExpression
+    ] = None,
 ) -> gtirb.DataBlock:
     """
     Adds a data block to a byte interval, setting up its contents and
     optionally its symbolic expressions.
+    :param byte_interval: The byte interval to add the block to.
+    :param contents: The content of the block.
+    :param symbolic_expressions: A dict mapping either symbolic expression
+           offset or tuples of [symbolic expression offset, symbolic
+           expression size] to symbplic expression.
+    :returns: The new block.
     """
     return add_byte_block(
         byte_interval, gtirb.DataBlock, content, symbolic_expressions
