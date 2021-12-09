@@ -371,7 +371,7 @@ def add_function(
                         symbol. If a string is passed, an appropriate symbol
                         is implicitly created. If there are multiple entry
                         blocks, that symbol will refer to the block with the
-                        lowerst offset.
+                        lowest offset.
     :param entry_block: The function's entry block or set of entry blocks.
     :param other_blocks: A set of other non-entry blocks in the function.
                          Optional.
