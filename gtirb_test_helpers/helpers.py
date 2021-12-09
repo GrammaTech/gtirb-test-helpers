@@ -363,26 +363,34 @@ def add_function(
     sym_or_name: Union[str, gtirb.Symbol],
     entry_block: Union[gtirb.CodeBlock, Set[gtirb.CodeBlock]],
     other_blocks: Set[gtirb.CodeBlock] = set(),
-    additional_entries: Set[gtirb.CodeBlock] = set(),
 ) -> uuid.UUID:
     """
     Adds a function to all the appropriate aux data.
+    :param module: The module to add the function to.
+    :param sym_or_name: The function name, which can either be a string or a
+                        symbol. If a string is passed, an appropriate symbol
+                        is implicitly created. If there are multiple entry
+                        blocks, that symbol will refer to the block with the
+                        lowest offset.
+    :param entry_block: The function's entry block or set of entry blocks.
+    :param other_blocks: A set of other non-entry blocks in the function.
+                         Optional.
+    :returns: The new function's UUID.
     """
+
     if isinstance(entry_block, gtirb.CodeBlock):
         entry_blocks = {entry_block}
     else:
         entry_blocks = entry_block
 
-    best_entry = sorted(entry_blocks, key=lambda b: b.offset)[0]
-
     if isinstance(sym_or_name, str):
+        best_entry = sorted(entry_blocks, key=lambda b: b.offset)[0]
         func_sym = add_symbol(module, sym_or_name, best_entry)
     elif isinstance(sym_or_name, gtirb.Symbol):
         func_sym = sym_or_name
     else:
         assert False, "Invalid symbol name"
 
-    entry_blocks = entry_blocks | additional_entries
     all_blocks = entry_blocks | other_blocks
 
     func_uuid = uuid.uuid4()
