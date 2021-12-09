@@ -11,4 +11,4 @@
 # endorsement should be inferred.
 #
 
-__version__ = "1.2.1.dev"
+__version__ = "1.3.1.dev"

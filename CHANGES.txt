@@ -1,4 +1,7 @@
-1.2.1 (Unreleased):
+1.3.1 (Unreleased):
+- TBD
+
+1.3.0:
 - add_code_block and add_data_block now accept (int, int) tuples as keys for
   symbolic expressions, with the first item being the offset and the second
   item being the size (which gets put in the symbolicExpressionSizes aux data
