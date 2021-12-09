@@ -361,21 +361,28 @@ def add_elf_symbol_info(
 def add_function(
     module: gtirb.Module,
     sym_or_name: Union[str, gtirb.Symbol],
-    entry_block: gtirb.CodeBlock,
+    entry_block: Union[gtirb.CodeBlock, Set[gtirb.CodeBlock]],
     other_blocks: Set[gtirb.CodeBlock] = set(),
     additional_entries: Set[gtirb.CodeBlock] = set(),
 ) -> uuid.UUID:
     """
     Adds a function to all the appropriate aux data.
     """
+    if isinstance(entry_block, gtirb.CodeBlock):
+        entry_blocks = {entry_block}
+    else:
+        entry_blocks = entry_block
+
+    best_entry = sorted(entry_blocks, key=lambda b: b.offset)[0]
+
     if isinstance(sym_or_name, str):
-        func_sym = add_symbol(module, sym_or_name, entry_block)
+        func_sym = add_symbol(module, sym_or_name, best_entry)
     elif isinstance(sym_or_name, gtirb.Symbol):
         func_sym = sym_or_name
     else:
         assert False, "Invalid symbol name"
 
-    entry_blocks = {entry_block} | additional_entries
+    entry_blocks = entry_blocks | additional_entries
     all_blocks = entry_blocks | other_blocks
 
     func_uuid = uuid.uuid4()

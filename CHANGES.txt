@@ -1,5 +1,8 @@
 1.2.1 (Unreleased):
-- TBD
+- add_code_block and add_data_block now accept (int, int) tuples as keys for
+  symbolic expressions, with the first item being the offset and the second
+  item being the size (which gets put in the symbolicExpressionSizes aux data
+  table)
 
 1.2.0:
 - Added additional_entries parameter to add_function for specifying multiple
