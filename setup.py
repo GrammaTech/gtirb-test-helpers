@@ -29,6 +29,7 @@ setuptools.setup(
     author_email="gtirb@grammatech.com",
     description="Utilities for creating GTIRB IR in tests",
     packages=setuptools.find_packages(),
+    package_data={"gtirb_test_helpers": ["py.typed"]},
     install_requires=["gtirb >= 1.10.3"],
     classifiers=["Programming Language :: Python :: 3"],
     long_description=long_description,

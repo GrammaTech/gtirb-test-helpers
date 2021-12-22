@@ -253,9 +253,10 @@ def add_byte_block(
         ].data
     else:
         size_aux_data = None
-        for key in symbolic_expressions.keys():
-            if not isinstance(key, int):
-                raise ValueError("could not find symbolicExpressionSizes")
+        if symbolic_expressions:
+            for key in symbolic_expressions.keys():
+                if not isinstance(key, int):
+                    raise ValueError("could not find symbolicExpressionSizes")
 
     if symbolic_expressions:
         for key, expr in symbolic_expressions.items():
@@ -411,7 +412,7 @@ def add_edge(
     cfg: gtirb.CFG,
     source: gtirb.CfgNode,
     target: gtirb.CfgNode,
-    edge_type: gtirb.Edge.Type,
+    edge_type: "gtirb.EdgeType",
     *,
     conditional: bool = False,
     direct: bool = True,

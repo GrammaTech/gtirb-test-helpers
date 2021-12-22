@@ -37,6 +37,7 @@ test:
   script:
     - pip3 install -r requirements-dev.txt
     - pip3 install -e .
+    - mypy gtirb_test_helpers
     - pytest --cov=gtirb_test_helpers --cov-fail-under=90
 
 # This job ensures that:
