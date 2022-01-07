@@ -38,6 +38,9 @@ test:
     - pip3 install -r requirements-dev.txt
     - pip3 install -e .
     - pytest --cov=gtirb_test_helpers --cov-fail-under=90
+    # Only gtirb 0.10.6 has type information
+    - pip3 install --upgrade 'gtirb >= 0.10.6.dev0' --extra-index-url $EXTRA_INDEX_URL
+    - mypy gtirb_test_helpers
 
 # This job ensures that:
 #   - Release branches never publish -dev packages, and packages

@@ -1,5 +1,6 @@
 2.0.0 (Unreleased):
 - Removed additional_entries from add_function
+- Added support for Python typing
 
 1.3.0:
 - add_code_block and add_data_block now accept (int, int) tuples as keys for
