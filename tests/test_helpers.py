@@ -20,6 +20,7 @@ from gtirb_test_helpers import (
     add_elf_symbol_info,
     add_function,
     add_proxy_block,
+    add_section,
     add_symbol,
     add_text_section,
     create_test_module,
@@ -276,3 +277,27 @@ def test_set_all_blocks_alignment():
 
     set_all_blocks_alignment(m, 1)
     assert m.aux_data["alignment"].data == {b1: 1, b2: 1, b3: 1}
+
+
+def test_add_section():
+    ir, m = create_test_module(
+        gtirb.Module.FileFormat.ELF, gtirb.Module.ISA.X64
+    )
+    s1, bi1 = add_section(m, ".init_array")
+
+    assert s1.name == ".init_array"
+    assert s1.byte_intervals == {bi1}
+    assert s1.flags == {
+        gtirb.Section.Flag.Readable,
+        gtirb.Section.Flag.Loaded,
+        gtirb.Section.Flag.Initialized,
+    }
+    assert bi1.contents == b""
+    assert bi1.address is None
+
+    s2, bi2 = add_section(m, ".fini_array", 0x1000, flags=set())
+    assert s2.name == ".fini_array"
+    assert s2.byte_intervals == {bi2}
+    assert s2.flags == set()
+    assert bi2.contents == b""
+    assert bi2.address == 0x1000
