@@ -1,4 +1,6 @@
-2.0.0 (Unreleased):
+2.0.1 (Unreleased):
+
+2.0.0:
 - Removed additional_entries from add_function
 - Added support for Python typing
 - Exposed add_section to __init__ so it can be imported
