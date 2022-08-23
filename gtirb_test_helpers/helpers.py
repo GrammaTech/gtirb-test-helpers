@@ -230,8 +230,8 @@ def add_byte_block(
     ] = None,
 ) -> BlockT:
     """
-    Adds a block to a byte interval, setting up its contents and optionally
-    its symbolic expressions.
+    Adds a block to the end of a byte interval, setting up its contents and
+    optionally its symbolic expressions.
     :param byte_interval: The byte interval to add the block to.
     :param block_type: The block class to use.
     :param contents: The content of the block.
@@ -282,8 +282,8 @@ def add_code_block(
     ] = None,
 ) -> gtirb.CodeBlock:
     """
-    Adds a code block to a byte interval, setting up its contents and
-    optionally its symbolic expressions.
+    Adds a code block to the end of a byte interval, setting up its contents
+    and optionally its symbolic expressions.
     :param byte_interval: The byte interval to add the block to.
     :param contents: The content of the block.
     :param symbolic_expressions: A dict mapping either symbolic expression
@@ -304,8 +304,8 @@ def add_data_block(
     ] = None,
 ) -> gtirb.DataBlock:
     """
-    Adds a data block to a byte interval, setting up its contents and
-    optionally its symbolic expressions.
+    Adds a data block to the end of a byte interval, setting up its contents
+    and optionally its symbolic expressions.
     :param byte_interval: The byte interval to add the block to.
     :param contents: The content of the block.
     :param symbolic_expressions: A dict mapping either symbolic expression
