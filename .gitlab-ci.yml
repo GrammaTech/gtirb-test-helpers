@@ -9,7 +9,7 @@ stages:
 
 default:
   image: python:3.7-slim
-  tags: ["kubernetes"]
+  tags: ['shared']
 
 check-format:
   stage: check-format
